@@ -22,13 +22,15 @@ export class SchedulesService {
       throw new NotFoundException(`Không tìm thấy lịch của ${villageName}`);
     }
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const now = new Date();
+    const vnTimeStr = now.toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" });
+    const vnDate = new Date(vnTimeStr);
+    vnDate.setHours(0, 0, 0, 0);
 
     const specialEvent = scheduleDoc.special_events.find(event => {
       const start = new Date(event.start_date);
       const end = new Date(event.end_date);
-      return today >= start && today <= end;
+      return vnDate.getTime() >= start.getTime() && vnDate.getTime() <= end.getTime();
     });
 
     if (specialEvent) {
@@ -42,7 +44,7 @@ export class SchedulesService {
       };
     }
 
-    const currentDayOfWeek = today.getDay();
+    const currentDayOfWeek = vnDate.getDay();
     
     const standard = scheduleDoc.standard_schedule.find(
       s => s.day_of_week === currentDayOfWeek
