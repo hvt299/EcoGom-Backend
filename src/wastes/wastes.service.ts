@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Waste } from './schemas/waste.schema';
 import { CreateWasteDto } from './dto/create-waste.dto';
+import { UpdateWasteDto } from './dto/update-waste.dto';
 
 @Injectable()
 export class WastesService {
@@ -23,6 +24,10 @@ export class WastesService {
       }).exec();
     }
     return this.wasteModel.find().exec();
+  }
+
+  async update(id: string, updateWasteDto: UpdateWasteDto): Promise<Waste | null> {
+    return this.wasteModel.findByIdAndUpdate(id, updateWasteDto, { new: true }).exec();
   }
 
   async remove(id: string): Promise<any> {
