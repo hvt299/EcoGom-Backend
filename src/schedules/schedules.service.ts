@@ -15,6 +15,10 @@ export class SchedulesService {
     return createdSchedule.save();
   }
 
+  async findAll(): Promise<CollectionSchedule[]> {
+    return this.scheduleModel.find().exec();
+  }
+
   async getTodaySchedule(villageName: string) {
     const scheduleDoc = await this.scheduleModel.findOne({ village_name: villageName }).exec();
     
@@ -66,5 +70,13 @@ export class SchedulesService {
       message: 'Hôm nay không có lịch thu gom',
       is_cancelled: false
     };
+  }
+
+  async update(id: string, attrs: Partial<CollectionSchedule>): Promise<CollectionSchedule | null> {
+    return this.scheduleModel.findByIdAndUpdate(id, attrs, { new: true }).exec();
+  }
+
+  async remove(id: string): Promise<any> {
+    return this.scheduleModel.findByIdAndDelete(id).exec();
   }
 }
