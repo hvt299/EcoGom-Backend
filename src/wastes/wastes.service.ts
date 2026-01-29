@@ -24,4 +24,8 @@ export class WastesService {
     }
     return this.wasteModel.find().exec();
   }
+
+  async remove(id: string): Promise<any> {
+    return this.wasteModel.findByIdAndDelete(id).exec();
+  }
 }
