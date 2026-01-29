@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { WastesService } from './wastes.service';
 import { ApiTags, ApiOperation, ApiQuery, ApiParam } from '@nestjs/swagger';
 import { CreateWasteDto } from './dto/create-waste.dto';
+import { UpdateWasteDto } from './dto/update-waste.dto';
 
 @ApiTags('Wastes (Quản lý Rác)')
 @Controller('wastes')
@@ -23,6 +24,13 @@ export class WastesController {
   })
   findAll(@Query('keyword') keyword: string) {
     return this.wastesService.findAll(keyword);
+  }
+
+  @Patch(':id')
+  @ApiOperation({ summary: 'Cập nhật thông tin rác' })
+  @ApiParam({ name: 'id', description: 'ID rác cần sửa' })
+  update(@Param('id') id: string, @Body() updateWasteDto: UpdateWasteDto) {
+    return this.wastesService.update(id, updateWasteDto);
   }
 
   @Delete(':id')

@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { LocationsService } from './locations.service';
-import { ApiTags, ApiOperation, ApiQuery } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiQuery, ApiParam } from '@nestjs/swagger';
 import { CreateLocationDto } from './dto/create-location.dto';
+import { UpdateLocationDto } from './dto/update-location.dto';
 
 @ApiTags('Locations (Điểm thu gom)')
 @Controller('locations')
@@ -29,5 +30,27 @@ export class LocationsController {
     @Query('long') long: number
   ) {
     return this.locationsService.findNearest(Number(lat), Number(long));
+  }
+
+  @Patch(':id')
+  @ApiOperation({ summary: 'Cập nhật thông tin điểm thu gom' })
+  @ApiParam({ 
+    name: 'id', 
+    description: 'ID của điểm thu gom', 
+    example: '697b3eb165dd8e0bb9889ae4' 
+  })
+  update(@Param('id') id: string, @Body() updateLocationDto: UpdateLocationDto) {
+    return this.locationsService.update(id, updateLocationDto);
+  }
+
+  @Delete(':id')
+  @ApiOperation({ summary: 'Xóa điểm thu gom' })
+  @ApiParam({ 
+    name: 'id', 
+    description: 'ID của điểm thu gom cần xóa', 
+    required: true 
+  })
+  remove(@Param('id') id: string) {
+    return this.locationsService.remove(id);
   }
 }

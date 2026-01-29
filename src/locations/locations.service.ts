@@ -30,4 +30,12 @@ export class LocationsService {
       },
     }).exec();
   }
+
+  async update(id: string, attrs: Partial<Location>): Promise<Location | null> {
+    return this.locationModel.findByIdAndUpdate(id, attrs, { new: true }).exec();
+  }
+
+  async remove(id: string): Promise<any> {
+    return this.locationModel.findByIdAndDelete(id).exec();
+  }
 }
