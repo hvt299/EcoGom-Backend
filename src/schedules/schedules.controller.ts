@@ -28,6 +28,13 @@ export class SchedulesController {
     return this.schedulesService.getTodaySchedule(village);
   }
 
+  @Get('detail')
+  @ApiOperation({ summary: 'Lấy chi tiết toàn bộ lịch của một thôn' })
+  @ApiQuery({ name: 'village', example: 'Thôn Đông' })
+  getFullByVillage(@Query('village') village: string) {
+    return this.schedulesService.getFullByVillage(village);
+  }
+
   @Patch(':id')
   @ApiOperation({ summary: 'Cập nhật lịch thu gom (Thôn/Xã/Giờ)' })
   @ApiParam({ 

@@ -72,6 +72,14 @@ export class SchedulesService {
     };
   }
 
+  async getFullByVillage(villageName: string) {
+    const schedule = await this.scheduleModel.findOne({ village_name: villageName }).exec();
+    if (!schedule) {
+       throw new NotFoundException(`Không tìm thấy lịch của ${villageName}`);
+    }
+    return schedule;
+  }
+
   async update(id: string, attrs: Partial<CollectionSchedule>): Promise<CollectionSchedule | null> {
     return this.scheduleModel.findByIdAndUpdate(id, attrs, { new: true }).exec();
   }
