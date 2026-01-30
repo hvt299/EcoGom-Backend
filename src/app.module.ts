@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { WastesModule } from './wastes/wastes.module';
 import { SchedulesModule } from './schedules/schedules.module';
 import { LocationsModule } from './locations/locations.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { LocationsModule } from './locations/locations.module';
     WastesModule,
     SchedulesModule,
     LocationsModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],
