@@ -1,4 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { WasteCategory } from '../schemas/waste.schema';
 
 class ProcessingStepDto {
   @ApiProperty({ example: 1, description: 'Thứ tự bước' })
@@ -10,16 +12,26 @@ class ProcessingStepDto {
 
 export class CreateWasteDto {
   @ApiProperty({ example: 'Vỏ lon nhôm', description: 'Tên chính của loại rác' })
+  @IsNotEmpty()
   name: string;
 
   @ApiProperty({ example: ['lon bia', 'lon nước ngọt'], description: 'Các tên gọi địa phương' })
   local_names: string[];
 
-  @ApiProperty({ example: 'Tái chế', description: 'Phân loại rác' })
+  @ApiProperty({ enum: WasteCategory, example: WasteCategory.RECYCLE, description: 'Phân loại rác theo Luật Bảo vệ môi trường 2020 (3 nhóm)' })
+  @IsEnum(WasteCategory, { message: 'Category phải thuộc 3 nhóm quy định' })
+  @IsNotEmpty()
   category: string;
 
-  @ApiProperty({ example: '30.000 đ/kg', description: 'Giá tham khảo' })
-  estimated_price: string;
+  @ApiProperty({ example: 'kg', description: 'Đơn vị tính (kg, cái, chiếc...)' })
+  @IsString()
+  @IsNotEmpty()
+  unit: string;
+
+  @ApiProperty({ example: 30000, description: 'Giá tham khảo (VNĐ)' })
+  @IsNumber()
+  @IsOptional()
+  estimated_price: number;
 
   @ApiProperty({ example: [], description: 'Danh sách link ảnh minh họa' })
   images: string[];

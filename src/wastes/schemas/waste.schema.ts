@@ -1,6 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
+export enum WasteCategory {
+  RECYCLE = 'Chất thải rắn có khả năng tái sử dụng, tái chế',
+  FOOD = 'Chất thải thực phẩm',
+  OTHER = 'Chất thải rắn sinh hoạt khác',
+}
+
 export class ProcessingStep {
   @Prop()
   step_order: number;
@@ -17,11 +23,18 @@ export class Waste extends Document {
   @Prop([String])
   local_names: string[];
 
-  @Prop()
+  @Prop({ 
+    required: true,
+    enum: WasteCategory,
+    type: String
+  })
   category: string;
 
-  @Prop()
-  estimated_price: string;
+  @Prop({ default: 'kg', required: true })
+  unit: string;
+
+  @Prop({ default: 0 })
+  estimated_price: number;
 
   @Prop([String])
   images: string[];
